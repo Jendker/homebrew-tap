@@ -3,7 +3,6 @@ class NeovimAT083 < Formula
   homepage "https://neovim.io/"
   license "Apache-2.0"
   head "https://github.com/neovim/neovim.git", branch: "master"
-  keg_only "this version is just for VSCode, not needed globally"
 
   stable do
     url "https://github.com/neovim/neovim/archive/v0.8.3.tar.gz"
@@ -36,6 +35,8 @@ class NeovimAT083 < Formula
     url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
+
+  keg_only "this version is just for VSCode, not needed globally"
 
   depends_on "cmake" => :build
   depends_on "luarocks" => :build
@@ -116,7 +117,7 @@ class NeovimAT083 < Formula
     inreplace "src/nvim/os/stdpaths.c" do |s|
       s.gsub! "/etc/xdg/", "#{etc}/xdg/:\\0"
 
-      unless HOMEBREW_PREFIX.to_s == HOMEBREW_DEFAULT_PREFIX
+      if HOMEBREW_PREFIX.to_s != HOMEBREW_DEFAULT_PREFIX
         s.gsub! "/usr/local/share/:/usr/share/", "#{HOMEBREW_PREFIX}/share/:\\0"
       end
     end
